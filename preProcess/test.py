@@ -2,6 +2,7 @@
 import jieba
 import gensim
 import pandas as pd
+import serverChan
 
 MODEL_PATH = 'baike_26g_news_13g_novel_229g.model'
 
@@ -16,6 +17,8 @@ def main():
     index2vector['index'] = model.wv.index2word
 
     index2vector.to_csv(OUTPUT_FILE, header=False, index=False)
+
+    serverChan.sendMessage(title='中文分词测试完毕')
 
 
 if __name__ == "__main__":
