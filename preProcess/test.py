@@ -3,6 +3,7 @@ import jieba
 import gensim
 import pandas as pd
 import serverChan
+import numpy as np
 
 MODEL_PATH = 'baike_26g_news_13g_novel_229g.model'
 
@@ -13,10 +14,15 @@ def main():
     print('词向量维度：', model.wv.vectors.shape)
     #print(model.wv.vectors)
 
-    index2vector = pd.DataFrame(columns=['index'])
-    index2vector['index'] = model.wv.index2word
+    #index2vector = pd.DataFrame(columns=['index'])
+    #index2vector['index'] = model.wv.index2word
 
-    index2vector.to_csv(OUTPUT_FILE, header=False, index=False)
+    #index2vector.to_csv(OUTPUT_FILE, header=False, index=False)
+
+    print(type(model['我']))
+
+    a = np.array(model['我'])
+    print(a)
 
     serverChan.sendMessage(title='中文分词测试完毕')
 

@@ -3,3 +3,4 @@
 *.model
 *.bin
 *.npy
+__pycache__/
