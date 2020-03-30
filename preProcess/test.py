@@ -22,9 +22,11 @@ def main():
     print(type(model['我']))
 
     a = np.array(model['我'])
+    b = model.wv.__getitem__('我')
+    a.tofile()
     print(a)
 
-    serverChan.sendMessage(title='中文分词测试完毕')
+    serverChan.sendMessage(title='中文测试完毕')
 
 
 if __name__ == "__main__":
