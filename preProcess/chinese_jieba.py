@@ -16,9 +16,9 @@ def chinese_jieba(meta_data):
         for j in range(len(Jieba)):
             if Jieba[j].find('/') < 0:
                 s_array.append(Jieba[j])
-
         s2 = '/'.join(s_array)
         meta_data['reviewbody'][i] = s2
+    return max
 
 
 def main():

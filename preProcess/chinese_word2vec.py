@@ -4,6 +4,7 @@ import tensorflow as tf
 import jieba
 import serverChan
 import gensim
+import joblib
 
 INPUT_FILE = "jieba_chinese_2columns.csv"
 
@@ -12,7 +13,7 @@ OUTPUT_NP = "chinese_vector"
 MODEL_PATH = '../baike_26g_news_13g_novel_229g.model'
 
 #return np.array
-def chinese_word2vec(meta_data, model):
+def chinese_word2vec_variable(meta_data, model):
     vectors = []
     for i in range(len(meta_data['reviewbody'])):
         s_array = []
@@ -59,10 +60,15 @@ def main():
     model = gensim.models.Word2Vec.load(MODEL_PATH)
     print('model load success')
 
-    vectors = np.array(chinese_word2vec(meta_data, model))
+    vectors = np.array(chinese_word2vec_variable(meta_data, model))
     print('finish word2vec:', vectors.shape)
     #print(vectors)
     np.save(OUTPUT_NP, vectors)
+    # 存储过大数据时会报错
+
+    # with open(OUTPUT_NP, 'wb') as fo:
+    #     joblib.dump(vectors, fo)
+
     print('finish save:', OUTPUT_NP)
     serverChan.sendMessage(title='word2vec完成')
 
