@@ -1,23 +1,25 @@
 import pandas as pd
 import numpy as np
-import tensorflow as tf
 import jieba
 import serverChan
 import gensim
-import joblib
+import math
+from sklearn.externals import joblib
 
 INPUT_FILE = "jieba_chinese_2columns.csv"
 
-OUTPUT_NP = "chinese_vector"
+OUTPUT_NAME = "chinese_vector"
 
 MODEL_PATH = '../baike_26g_news_13g_novel_229g.model'
 
 SENTENCE_LENGTH = 128
 
+PART_LENGTH = 100000
+
 #return np.array
-def chinese_word2vec_variable(meta_data, model):
+def chinese_word2vec_variable(meta_data, model, start):
     vectors = []
-    for i in range(len(meta_data['reviewbody'])):
+    for i in range(start,start+len(meta_data['reviewbody'])):
         zero_array = [0.0 for _ in range (SENTENCE_LENGTH)]
         s_array = []
         s = meta_data['reviewbody'][i]
@@ -69,16 +71,19 @@ def main():
     model = gensim.models.Word2Vec.load(MODEL_PATH)
     print('model load success')
 
-    vectors = np.array(chinese_word2vec_variable(meta_data, model))
-    print('finish word2vec:', vectors.shape)
-    #print(vectors)
-    np.save(OUTPUT_NP, vectors)
-    # 存储过大数据时会报错
+    parts = math.ceil(len(meta_data) / PART_LENGTH)
+    for i in range(parts):
+        k = i * PART_LENGTH
+        vectors = np.array(chinese_word2vec_variable(meta_data[k:k+PART_LENGTH], model, k))
+        print('finish word2vec:', vectors.shape)
+        #print(vectors)
+        #np.save(OUTPUT_NP, vectors)
+        # 存储过大数据时会报错
+        filename = OUTPUT_NAME+f"_{i}.pkl"
+        joblib.dump(vectors, filename)
+        print('finish save:', filename)
+        vectors = []
 
-    # with open(OUTPUT_NP, 'wb') as fo:
-    #     joblib.dump(vectors, fo)
-
-    print('finish save:', OUTPUT_NP)
     serverChan.sendMessage(title='word2vec完成')
 
 if __name__ == "__main__":

@@ -4,3 +4,4 @@
 *.bin
 *.npy
 __pycache__/
+*.pkl
