@@ -12,10 +12,13 @@ OUTPUT_NP = "chinese_vector"
 
 MODEL_PATH = '../baike_26g_news_13g_novel_229g.model'
 
+SENTENCE_LENGTH = 128
+
 #return np.array
 def chinese_word2vec_variable(meta_data, model):
     vectors = []
     for i in range(len(meta_data['reviewbody'])):
+        zero_array = [0.0 for _ in range (SENTENCE_LENGTH)]
         s_array = []
         s = meta_data['reviewbody'][i]
         if isinstance(s, float):
@@ -47,7 +50,13 @@ def chinese_word2vec_variable(meta_data, model):
                 break
             except :
                 print("s_array.remove unknown error")
-                break
+                return []
+
+        #modify to certain length
+        while len(s_array) < SENTENCE_LENGTH:
+            s_array.append(zero_array)
+        if len(s_array) > SENTENCE_LENGTH:
+            s_array = s_array[:SENTENCE_LENGTH]
 
         vectors.append(s_array)
 
