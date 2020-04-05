@@ -17,9 +17,9 @@ SENTENCE_LENGTH = 128
 PART_LENGTH = 100000
 
 #return np.array
-def chinese_word2vec_variable(meta_data, model, start):
+def chinese_word2vec_variable(meta_data, model):
     vectors = []
-    for i in range(start,start+len(meta_data['reviewbody'])):
+    for i in range(len(meta_data)):
         zero_array = [0.0 for _ in range (SENTENCE_LENGTH)]
         s_array = []
         s = meta_data['reviewbody'][i]
@@ -62,7 +62,7 @@ def chinese_word2vec_variable(meta_data, model, start):
 
         vectors.append(s_array)
 
-    return vectors
+    return np.array(vectors)
 
 
 
@@ -74,7 +74,7 @@ def main():
     parts = math.ceil(len(meta_data) / PART_LENGTH)
     for i in range(parts):
         k = i * PART_LENGTH
-        vectors = np.array(chinese_word2vec_variable(meta_data[k:k+PART_LENGTH], model, k))
+        vectors = chinese_word2vec_variable(meta_data[k:k+PART_LENGTH].reset_index(drop=True), model)
         print('finish word2vec:', vectors.shape)
         #print(vectors)
         #np.save(OUTPUT_NP, vectors)
