@@ -4,7 +4,7 @@ import jieba
 import serverChan
 import gensim
 import math
-from sklearn.externals import joblib
+import joblib
 
 INPUT_FILE = "jieba_chinese_2columns.csv"
 
@@ -17,7 +17,7 @@ SENTENCE_LENGTH = 128
 PART_LENGTH = 100000
 
 #return np.array
-def chinese_word2vec_variable(meta_data, model):
+def chinese_word2vec_variable(meta_data, model, show=False):
     vectors = []
     for i in range(len(meta_data)):
         zero_array = [0.0 for _ in range (SENTENCE_LENGTH)]
@@ -60,7 +60,11 @@ def chinese_word2vec_variable(meta_data, model):
         if len(s_array) > SENTENCE_LENGTH:
             s_array = s_array[:SENTENCE_LENGTH]
 
-        vectors.append(s_array)
+        #vectors.append(s_array)
+        vectors.append([s_array])
+
+        if show == True and i % 100 == 0:
+            print(i, "/", len(meta_data))
 
     return np.array(vectors)
 

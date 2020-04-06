@@ -1,12 +1,15 @@
 import numpy as np
 import pandas as pd
-from sklearn.externals import joblib
+import joblib
+from preProcess.data_clear import clear_notNum
+
 INPUT_FILE = "jieba_chinese_2columns_smallSize.csv"
 
 OUTPUT_NAME = "chinese_label"
 
 def divide_2(meta_data):
     labels = []
+    meta_data = clear_notNum(meta_data)
     for i in range(len(meta_data)):
         if(meta_data['logreason'][i] < 0):
             meta_data['logreason'][i] = 0

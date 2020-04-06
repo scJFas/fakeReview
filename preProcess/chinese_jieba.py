@@ -1,13 +1,12 @@
 import pandas as pd
-import tensorflow as tf
 import jieba
 import serverChan
 
-INPUT_FILE = "2columns.csv"
+INPUT_FILE = "2column_10w.csv"
 
-OUTPUT_FILE = "jieba_chinese_2columns.csv"
+OUTPUT_FILE = "jieba_chinese_10w.csv"
 
-def chinese_jieba(meta_data):
+def chinese_jieba(meta_data, show=False):
     jieba.enable_paddle()
     for i in range(len(meta_data['reviewbody'])):
         s1 = meta_data['reviewbody'][i]
@@ -18,12 +17,13 @@ def chinese_jieba(meta_data):
                 s_array.append(Jieba[j])
         s2 = '/'.join(s_array)
         meta_data['reviewbody'][i] = s2
-    return max
+        if show == True and i % 100 == 0:
+            print(i, "/", len(meta_data))
 
 
 def main():
     meta_data = pd.read_csv(INPUT_FILE, header=0)
-    chinese_jieba(meta_data)
+    chinese_jieba(meta_data, show=True)
     #print(type(meta_data['reviewbody'][0]))
     meta_data.to_csv(OUTPUT_FILE, index=False, columns=['reviewbody', 'logreason'])
 

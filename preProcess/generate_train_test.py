@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.externals import joblib
+import joblib
 import gensim
 import math
 
@@ -10,9 +10,9 @@ import serverChan
 
 TRAIN_PERCENT = 0.9
 
-INPUT_FILE = "jieba_chinese_2columns_smallSize.csv"
+INPUT_FILE = "jieba_chinese_10w.csv"
 
-OUTPUT_NAME = "mac_data"
+OUTPUT_NAME = "../train/first"
 
 def main():
     meta_data = pd.read_csv(INPUT_FILE, header=0)
@@ -25,7 +25,6 @@ def main():
         #暂时弃用
         #未取得测试集和label
     else:
-        end = len(meta_data) - math.floor(len(meta_data) * TEST_PERCENT / 100)
         train = meta_data.sample(frac=TRAIN_PERCENT, random_state=0, axis=0)
         test = meta_data[~meta_data.index.isin(train.index)]
         train = train.reset_index(drop=True)
@@ -44,6 +43,7 @@ def main():
 
         serverChan.sendMessage("创建训练与测试数据完成")
 
+    return 0
 
 if __name__ == "__main__":
     main()
