@@ -12,19 +12,19 @@ TRAIN_PERCENT = 0.9
 
 INPUT_FILE = "jieba_chinese_10w.csv"
 
-OUTPUT_NAME = "../train/first"
+OUTPUT_NAME = "../train/10w"
 
 def main():
-    meta_data = pd.read_csv(INPUT_FILE, header=0)
-    model = gensim.models.Word2Vec.load(MODEL_PATH)
-    print('model load success')
-
     parts = math.ceil(len(meta_data) / PART_LENGTH)
     if(parts > 1):
         print("暂时没用")
         #暂时弃用
         #未取得测试集和label
     else:
+        meta_data = pd.read_csv(INPUT_FILE, header=0)
+        model = gensim.models.Word2Vec.load(MODEL_PATH)
+        print('model load success')
+
         train = meta_data.sample(frac=TRAIN_PERCENT, random_state=0, axis=0)
         test = meta_data[~meta_data.index.isin(train.index)]
         train = train.reset_index(drop=True)

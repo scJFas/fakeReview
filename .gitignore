@@ -5,3 +5,4 @@
 *.npy
 __pycache__/
 *.pkl
+*.h5

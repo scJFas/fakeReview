@@ -9,7 +9,9 @@ OUTPUT_NAME = "chinese_label"
 
 def divide_2(meta_data):
     labels = []
-    meta_data = clear_notNum(meta_data)
+    if isinstance(meta_data['logreason'][0], str):
+        print('cant divide')
+        return
     for i in range(len(meta_data)):
         if(meta_data['logreason'][i] < 0):
             meta_data['logreason'][i] = 0

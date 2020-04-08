@@ -12,6 +12,7 @@ def model_CNN(filters = 32):
     model.add(layers.Flatten(data_format="channels_first"))
     model.add(layers.Dense(100, activation="relu"))
     model.add(layers.Dense(2))
+    #model.add(layers.Softmax())
 
     model.compile(optimizer='adam',
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),

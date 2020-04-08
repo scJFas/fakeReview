@@ -4,15 +4,17 @@ from tensorflow.keras import datasets, layers, models
 import joblib
 import matplotlib.pyplot as plt
 
-import model_cnn
+from train import model_cnn
 import serverChan
 
 EPOCHS = 10
 
-TRAIN_VECTORS = "first_train_vectors.pkl"
-TRAIN_LABELS = "first_train_labels.pkl"
-TEST_VECTORS = "first_test_vector.pkl"
-TEST_LABELS = "first_test_labels.pkl"
+TRAIN_VECTORS = "10w_train_vectors.pkl"
+TRAIN_LABELS = "10w_train_labels.pkl"
+TEST_VECTORS = "10w_test_vector.pkl"
+TEST_LABELS = "10w_test_labels.pkl"
+
+SAVE_MODEL_NAME = "10w_model1.h5"
 
 def main():
     model = model_cnn.model_CNN()
@@ -32,7 +34,9 @@ def main():
     plt.legend(loc='lower right')
     plt.show()
 
-    #serverChan.sendMessage("模型训练完成")
+    serverChan.sendMessage("模型训练完成")
+
+    model.save(SAVE_MODEL_NAME)
     return 0
 
 if __name__ == "__main__":
