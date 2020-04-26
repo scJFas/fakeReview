@@ -40,9 +40,21 @@ def clear_all_dataTypes(meta_data):
                 return []
     meta_data.reset_index(drop=True, inplace=True)
 
-    # if isinstance(meta_data['userid'][0], np.int64) == False:
-    # if isinstance(meta_data['shopid'][0], np.int64) == False:
-    # if isinstance(meta_data['star'][0], np.int64) == False:
+    if isinstance(meta_data['userid'][0], np.int64) == False:
+        for i in range(len(meta_data)):
+            if str.isdigit(meta_data['userid'][i]) == False:
+                meta_data.drop([i], inplace=True)
+    meta_data.reset_index(drop=True, inplace=True)
+    if isinstance(meta_data['shopid'][0], np.int64) == False:
+        for i in range(len(meta_data)):
+            if str.isdigit(meta_data['shopid'][i]) == False:
+                meta_data.drop([i], inplace=True)
+    meta_data.reset_index(drop=True, inplace=True)
+    if isinstance(meta_data['star'][0], np.int64) == False:
+        for i in range(len(meta_data)):
+            if str.isdigit(meta_data['star'][i]) == False:
+                meta_data.drop([i], inplace=True)
+    meta_data.reset_index(drop=True, inplace=True)
     # if isinstance(meta_data['score1'][0], np.int64) == False:
     # if isinstance(meta_data['score2'][0], np.int64) == False:
     # if isinstance(meta_data['score3'][0], np.int64) == False:
@@ -52,7 +64,9 @@ def clear_all_dataTypes(meta_data):
 
 def main():
     meta_data = pd.read_csv(INPUT_FILE, header=0)
+    print(f"original len: {len(meta_data)}")
     meta_data = clear_all_dataTypes(meta_data)
+    print(f"after cleared len: {len(meta_data)}")
     meta_data.to_csv(OUTPUT_FILE, header=True, index= False)
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ OUTPUT_NAME = "chinese_label"
 def divide_2(meta_data):
     labels = []
     if isinstance(meta_data['logreason'][0], str):
-        print('cant divide')
+        print('cant divide label')
         return
     for i in range(len(meta_data)):
         if(meta_data['logreason'][i] < 0):

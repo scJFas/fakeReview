@@ -4,7 +4,7 @@ from tensorflow.keras import datasets, layers, models
 import joblib
 import matplotlib.pyplot as plt
 
-from train import model_cnn
+from train import myModels
 import serverChan
 
 EPOCHS = 10
@@ -17,7 +17,7 @@ TEST_LABELS = "10w_test_labels.pkl"
 SAVE_MODEL_NAME = "10w_model1.h5"
 
 def main():
-    model = model_cnn.model_CNN()
+    model = myModels.model_CNN()
     train_vectors = joblib.load(TRAIN_VECTORS)
     train_labels = joblib.load(TRAIN_LABELS)
     test_vectors = joblib.load(TEST_VECTORS)
