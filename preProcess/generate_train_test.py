@@ -10,22 +10,29 @@ import serverChan
 
 TRAIN_PERCENT = 0.9
 
-INPUT_FILE = "jieba_chinese_10w.csv"
+INPUT_FILE = "cleared.csv"
 
-OUTPUT_NAME = "../train/10w"
+OUTPUT_NAME = "../train/1w"
 def convert_user_actions(meta_data):
     actions = []
     if isinstance(meta_data['userid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
         print('cant convert user actions')
         return
-    return
+    for i in range(len(meta_data)):
+        action = [meta_data['userid'][i], meta_data['star'][i], meta_data['updatetime'][i]]
+        actions.append([action])
+    return np.array(actions)
 
 
 def convert_shop_actions(meta_data):
+    actions = []
     if isinstance(meta_data['shopid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
         print('cant convert user actions')
         return
-    return
+    for i in range(len(meta_data)):
+        action = [meta_data['shopid'][i], meta_data['star'][i], meta_data['updatetime'][i]]
+        actions.append([action])
+    return np.array(actions)
 
 def convert_all(meta_data, model):
     vectors = []
@@ -33,8 +40,8 @@ def convert_all(meta_data, model):
     shop_actions = []
 
     vectors = chinese_word2vec_variable(meta_data, model)
-    user_actions = convert_user_actions()
-    shop_actions = convert_shop_actions()
+    user_actions = convert_user_actions(meta_data)
+    shop_actions = convert_shop_actions(meta_data)
 
     train_data = {"vectors": vectors, "user_actions": user_actions, "shop_actions":shop_actions}
     return train_data
@@ -47,24 +54,23 @@ def main():
         #暂时弃用
         #未取得测试集和label
     else:
-        meta_data = pd.read_csv(INPUT_FILE, header=0)
         model = gensim.models.Word2Vec.load(MODEL_PATH)
         print('model load success')
+        meta_data = pd.read_csv(INPUT_FILE, header=0)
 
         train = meta_data.sample(frac=TRAIN_PERCENT, random_state=0, axis=0)
         test = meta_data[~meta_data.index.isin(train.index)]
         train = train.reset_index(drop=True)
         test = test.reset_index(drop=True)
 
-        train_vectors = chinese_word2vec_variable(train, model)
-        train_actions =
+        train_data = convert_all(train, model)
         train_labels = divide_2(train)
-        test_vectors = chinese_word2vec_variable(test, model)
+        test_data = convert_all(train, model)
         test_labels = divide_2(test)
 
-        joblib.dump(train_vectors, OUTPUT_NAME+"_train_vectors.pkl")
+        joblib.dump(train_data, OUTPUT_NAME+"_train_data.pkl")
         joblib.dump(train_labels, OUTPUT_NAME + "_train_labels.pkl")
-        joblib.dump(test_vectors, OUTPUT_NAME + "_test_vector.pkl")
+        joblib.dump(test_data, OUTPUT_NAME + "_test_data.pkl")
         joblib.dump(test_labels, OUTPUT_NAME + "_test_labels.pkl")
         print("file save succeed")
 
