@@ -65,7 +65,7 @@ def main():
 
         train_data = convert_all(train, model)
         train_labels = divide_2(train)
-        test_data = convert_all(train, model)
+        test_data = convert_all(test, model)
         test_labels = divide_2(test)
 
         joblib.dump(train_data, OUTPUT_NAME+"_train_data.pkl")

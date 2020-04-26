@@ -47,10 +47,10 @@ def complete_model(filters = 32):
     word3 = layers.Flatten(data_format="channels_first")(word2)
     word4 = layers.Dense(2)(word3)
 
-    input2 = tf.keras.Input(shape=(1, 4), dtype="float64")
+    input2 = tf.keras.Input(shape=(1, 3), dtype="float64")
     user1 = layers.LSTM(1)(input2)
 
-    input3 = tf.keras.Input(shape=(1, 4), dtype="float64")
+    input3 = tf.keras.Input(shape=(1, 3), dtype="float64")
     shop1 = layers.LSTM(1)(input3)
 
     cat = layers.concatenate([word4, user1, shop1])

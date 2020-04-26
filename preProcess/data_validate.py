@@ -15,6 +15,10 @@ def main():
 
     for key in train_data.keys():
         print(f"{key}: {type(train_data[key])} {train_data[key].shape}")
+    print(f"train_labels: {len(train_labels)}")
+    for key in test_data.keys():
+        print(f"{key}: {type(test_data[key])} {test_data[key].shape}")
+    print(f"test_labels: {len(test_labels)}")
 
 if __name__ == "__main__":
     main()
