@@ -10,7 +10,7 @@ def model_CNN(filters = 32):
     model.add(layers.Conv2D(filters, (3,128), (1,1), data_format="channels_first", activation="relu"))
     model.add(layers.MaxPool2D((2,1), data_format="channels_first"))
     model.add(layers.Flatten(data_format="channels_first"))
-    model.add(layers.Dense(100, activation="relu"))
+    model.add(layers.Dense(20, activation="relu"))
     model.add(layers.Dense(2))
     #model.add(layers.Softmax())
 
@@ -56,10 +56,10 @@ def complete_model(filters = 32):
     cat = layers.concatenate([word4, user1, shop1])
     flat = layers.Flatten()(cat)
 
-    dense1 = layers.Dense(4, activation="relu")(flat)
-    output = layers.Dense(2)(dense1)
+    dense1 = layers.Dense(2, activation="relu")(flat)
+    output = layers.Softmax()(dense1)
 
-    model = tf.keras.Model(inputs=[input1,input2,input3], outputs=output)
+    model = tf.keras.Model(inputs=[input1,input2,input3], outputs=dense1)
 
     model.compile(optimizer='adam',
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),

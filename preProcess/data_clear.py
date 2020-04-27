@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-INPUT_FILE = "keep_only_chinese.csv"
+INPUT_FILE = "reviewtext.csv"
 
-OUTPUT_FILE = "cleared.csv"
+OUTPUT_FILE = "reviewtext_cleared.csv"
 
 LOGREASON = ["5","6","16","17","18","-1"]
 
@@ -29,7 +29,7 @@ def clear_all_dataTypes(meta_data):
                 meta_data.drop([i], inplace=True)
     meta_data.reset_index(drop=True, inplace=True)
 
-    if isinstance(meta_data['updatetime'][0], np.int64) == False:
+    if isinstance(meta_data['updatetime'][0], str):
         for i in range(len(meta_data)):
             try:
                 pd.to_datetime(meta_data['updatetime'][i], format='%Y/%m/%d %H:%M')
@@ -52,8 +52,9 @@ def clear_all_dataTypes(meta_data):
     meta_data.reset_index(drop=True, inplace=True)
     if isinstance(meta_data['star'][0], np.int64) == False:
         for i in range(len(meta_data)):
-            if str.isdigit(meta_data['star'][i]) == False:
-                meta_data.drop([i], inplace=True)
+            if isinstance(meta_data['star'][i], str):
+                if str.isdigit(meta_data['star'][i]) == False:
+                    meta_data.drop([i], inplace=True)
     meta_data.reset_index(drop=True, inplace=True)
     # if isinstance(meta_data['score1'][0], np.int64) == False:
     # if isinstance(meta_data['score2'][0], np.int64) == False:

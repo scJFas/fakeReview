@@ -10,7 +10,7 @@ import serverChan
 
 TRAIN_PERCENT = 0.9
 
-INPUT_FILE = "cleared.csv"
+INPUT_FILE = "jieba_timeCov_1w.csv"
 
 OUTPUT_NAME = "../train/1w"
 def convert_user_actions(meta_data):
@@ -73,6 +73,12 @@ def main():
         joblib.dump(test_data, OUTPUT_NAME + "_test_data.pkl")
         joblib.dump(test_labels, OUTPUT_NAME + "_test_labels.pkl")
         print("file save succeed")
+
+        #clear memory
+        train_data = []
+        train_labels = []
+        test_data = []
+        test_labels = []
 
         serverChan.sendMessage("创建训练与测试数据完成")
 
