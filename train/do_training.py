@@ -8,7 +8,7 @@ from preProcess.data_standardization import normalization
 from train import myModels
 import serverChan
 
-EPOCHS = 3
+EPOCHS = 5
 
 TRAIN_DATA = "10w_dataSTA_train_data.pkl"
 TRAIN_LABELS = "10w_dataSTA_train_labels.pkl"
@@ -19,7 +19,7 @@ SAVE_MODEL = True
 OUTPUT_PREDICT = True
 
 PREFIX = "10w_"
-cmd = 3
+cmd = 1
 
 def main():
     train_data = joblib.load(TRAIN_DATA)

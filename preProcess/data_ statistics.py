@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-INPUT_FILE = "jieba_timeCov_dataSTA_10w.csv"
+INPUT_FILE = "jieba_timeCov_10w.csv"
 
 def int_status(x):
     return pd.Series([x.count(),x.min(),x.idxmin(),x.quantile(.25),x.median(),
@@ -15,30 +16,56 @@ def get_review_len(meta_data):
 
     meta_data['reviewlen'] = review_lens
 
+def label_count(meta_data):
+    label_dict = {}
+    for i in range(len(meta_data)):
+        num = meta_data["logreason"][i]
+        if num not in label_dict:
+            label_dict[num] = 1
+        else:
+            label_dict[num] += 1
+
+    return label_dict
+
 def main():
     meta_data = pd.read_csv(INPUT_FILE, header=0)
-    timeDelta = int_status(meta_data['updatetime'])
-    user_id = int_status(meta_data['userid'])
-    shop_id = int_status(meta_data['shopid'])
-    star = int_status(meta_data['star'])
+    # timeDelta = int_status(meta_data['updatetime'])
+    # user_id = int_status(meta_data['userid'])
+    # shop_id = int_status(meta_data['shopid'])
+    # star = int_status(meta_data['star'])
+    #
+    # get_review_len(meta_data)
+    # lens = int_status(meta_data['reviewlen'])
+    #
+    # print("timeDelta: ")
+    # print(timeDelta)
+    #
+    # print("user_id: ")
+    # print(user_id)
+    #
+    # print("shop_id: ")
+    # print(shop_id)
+    #
+    # print("star: ")
+    # print(star)
+    #
+    # print("reviewLen: ")
+    # print(lens)
 
-    get_review_len(meta_data)
-    lens = int_status(meta_data['reviewlen'])
+    # print("10", meta_data['reviewlen'].quantile(.10))
+    # print("90", meta_data['reviewlen'].quantile(.90))
 
-    print("timeDelta: ")
-    print(timeDelta)
+    label_dict = label_count(meta_data)
+    print("label_count: ")
+    print(label_dict)
 
-    print("user_id: ")
-    print(user_id)
+    plt.title("label-time")
+    plt.xlabel("timeDelta")
+    plt.ylabel("label")
+    plt.scatter(meta_data['updatetime'], meta_data['logreason'])
+    plt.legend('y1')
+    plt.show()
 
-    print("shop_id: ")
-    print(shop_id)
-
-    print("star: ")
-    print(star)
-
-    print("reviewLen: ")
-    print(lens)
 
 if __name__ == "__main__":
     main()
