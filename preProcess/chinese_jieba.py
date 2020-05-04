@@ -2,9 +2,9 @@ import pandas as pd
 import jieba
 import serverChan
 
-INPUT_FILE = "1w.csv"
+INPUT_FILE = "timeCov_10w.csv"
 
-OUTPUT_FILE = "jieba_1w.csv"
+OUTPUT_FILE = "jieba_timeCov_10w.csv"
 
 def chinese_jieba(meta_data, show=False):
     jieba.enable_paddle()

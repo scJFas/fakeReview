@@ -4,18 +4,22 @@ from tensorflow.keras import datasets, layers, models
 import joblib
 import matplotlib.pyplot as plt
 
+from preProcess.data_standardization import normalization
 from train import myModels
 import serverChan
 
-EPOCHS = 7
+EPOCHS = 3
 
-TRAIN_DATA = "1w_train_data.pkl"
-TRAIN_LABELS = "1w_train_labels.pkl"
-TEST_DATA = "1w_test_data.pkl"
-TEST_LABELS = "1w_test_labels.pkl"
+TRAIN_DATA = "10w_dataSTA_train_data.pkl"
+TRAIN_LABELS = "10w_dataSTA_train_labels.pkl"
+TEST_DATA = "10w_dataSTA_test_data.pkl"
+TEST_LABELS = "10w_dataSTA_test_labels.pkl"
 
-SAVE_MODEL = False
-SAVE_MODEL_NAME = "10w_model1.h5"
+SAVE_MODEL = True
+OUTPUT_PREDICT = True
+
+PREFIX = "10w_"
+cmd = 3
 
 def main():
     train_data = joblib.load(TRAIN_DATA)
@@ -24,14 +28,27 @@ def main():
     test_labels = joblib.load(TEST_LABELS)
     print("数据集导入完成")
 
-    model = myModels.complete_model()
-    history = model.fit([train_data['vectors'], train_data['user_actions'], train_data['shop_actions']], train_labels, epochs=EPOCHS,
-                        validation_data=([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']], test_labels))
 
-    # model = myModels.model_CNN()
-    # history = model.fit(train_data['vectors'], train_labels, epochs=EPOCHS,  validation_data=(test_data['vectors'], test_labels))
+    if cmd == 1 :
+        SAVE_MODEL_NAME = PREFIX + "CPmodel.h5"
+        model = myModels.complete_model()
+        history = model.fit([train_data['vectors'], train_data['user_actions'], train_data['shop_actions']], train_labels, epochs=EPOCHS,
+                            validation_data=([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']], test_labels))
+    elif cmd == 2:
+        SAVE_MODEL_NAME = PREFIX + "CNN.h5"
+        model = myModels.model_CNN()
+        history = model.fit(train_data['vectors'], train_labels, epochs=EPOCHS,  validation_data=(test_data['vectors'], test_labels))
+    elif cmd == 3:
+        SAVE_MODEL_NAME = PREFIX + "origin.h5"
+        model = myModels.model_origin()
+        history = model.fit([train_data['vectors'], train_data['user_actions'], train_data['shop_actions']], train_labels, epochs=EPOCHS,
+                            validation_data=([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']], test_labels))
 
-    plt.title("1w CPmodel with softmax layer")
+    if OUTPUT_PREDICT:
+        predicts = model.predict([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']])
+        print(normalization(predicts))
+
+    plt.title(SAVE_MODEL_NAME)
     plt.plot(history.history['accuracy'], label='accuracy')
     plt.plot(history.history['val_accuracy'], label='val_accuracy')
     plt.xlabel('Epoch')
@@ -40,8 +57,9 @@ def main():
     plt.legend(loc='lower right')
     plt.show()
 
+
     #serverChan.sendMessage("模型训练完成")
-    if(SAVE_MODEL):
+    if SAVE_MODEL:
         model.save(SAVE_MODEL_NAME)
     return 0
 

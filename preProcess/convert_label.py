@@ -3,9 +3,11 @@ import pandas as pd
 import joblib
 from preProcess.data_clear import clear_notNum
 
-INPUT_FILE = "jieba_chinese_2columns_smallSize.csv"
+INPUT_FILE = "10w_keep_only_chinese.csv"
 
-OUTPUT_NAME = "chinese_label"
+OUTPUT_FILE= "10w_keep_only_chinese_2label.csv"
+
+OUTPUT_NAME = ""
 
 def divide_2(meta_data):
     labels = []
@@ -23,12 +25,14 @@ def divide_2(meta_data):
 
 def main():
     meta_data = pd.read_csv(INPUT_FILE, header=0)
-    labels = np.array(divide_2(meta_data, 0))
+    labels = np.array(divide_2(meta_data))
     print("finish convert:", labels.shape)
 
-    filename = OUTPUT_NAME + ".pkl"
-    joblib.dump(labels, filename)
-    print('finish save:', filename)
+    # filename = OUTPUT_NAME + ".pkl"
+    # joblib.dump(labels, filename)
+    # print('finish save:', filename)
+
+    meta_data.to_csv(OUTPUT_FILE, header=True, index=False)
 
 if __name__ == "__main__":
     main()

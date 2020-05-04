@@ -1,8 +1,8 @@
 from preProcess import import_meta_data as imd
 import pandas as pd
 
-INPUT_FILE = "reviewtext.csv"
-OUTPUT_FILE = "keep_only_chinese.csv"
+INPUT_FILE = "10w_cutCol.csv"
+OUTPUT_FILE = "10w_keep_only_chinese.csv"
 
 def delete_no_chinese(meta_data, key = 'reviewbody'):
     for i in range(len(meta_data[key]) ):

@@ -10,14 +10,14 @@ import serverChan
 
 TRAIN_PERCENT = 0.9
 
-INPUT_FILE = "jieba_timeCov_1w.csv"
+INPUT_FILE = "jieba_timeCov_dataSTA_10w.csv"
 
-OUTPUT_NAME = "../train/1w"
+OUTPUT_NAME = "../train/10w_dataSTA"
 def convert_user_actions(meta_data):
     actions = []
-    if isinstance(meta_data['userid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
-        print('cant convert user actions')
-        return
+    # if isinstance(meta_data['userid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
+    #     print('cant convert user actions')
+    #     return
     for i in range(len(meta_data)):
         action = [meta_data['userid'][i], meta_data['star'][i], meta_data['updatetime'][i]]
         actions.append([action])
@@ -26,9 +26,9 @@ def convert_user_actions(meta_data):
 
 def convert_shop_actions(meta_data):
     actions = []
-    if isinstance(meta_data['shopid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
-        print('cant convert user actions')
-        return
+    # if isinstance(meta_data['shopid'][0], np.int64) == False or isinstance(meta_data['star'][0], np.int64) == False:
+    #     print('cant convert user actions')
+    #     return
     for i in range(len(meta_data)):
         action = [meta_data['shopid'][i], meta_data['star'][i], meta_data['updatetime'][i]]
         actions.append([action])

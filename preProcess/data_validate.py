@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 import joblib
 
-TRAIN_DATA = "../train/1w_train_data.pkl"
-TRAIN_LABELS = "../train/1w_train_labels.pkl"
-TEST_DATA = "../train/1w_test_data.pkl"
-TEST_LABELS = "../train/1w_test_labels.pkl"
+TRAIN_DATA = "../train/10w_dataSTA_train_data.pkl"
+TRAIN_LABELS = "../train/10w_dataSTA_train_labels.pkl"
+TEST_DATA = "../train/10w_dataSTA_test_data.pkl"
+TEST_LABELS = "../train/10w_dataSTA_test_labels.pkl"
 
 def main():
     train_data = joblib.load(TRAIN_DATA)

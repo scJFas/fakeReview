@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-INPUT_FILE = "../reviewtext.csv"
-OUTPUT_FILE = "output_test.csv"
+INPUT_FILE = "10w.csv"
+OUTPUT_FILE = "10w.csv"
 
 def import_meta_data():
     meta_data = pd.DataFrame()
