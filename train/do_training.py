@@ -3,12 +3,12 @@ import tensorflow as tf
 from tensorflow.keras import datasets, layers, models
 import joblib
 import matplotlib.pyplot as plt
-
-from preProcess.data_standardization import normalization
 from train import myModels
 import serverChan
 
-EPOCHS = 5
+EPOCHS = 3
+
+from preProcess.data_standardization import normalization
 
 TRAIN_DATA = "10w_dataSTA_train_data.pkl"
 TRAIN_LABELS = "10w_dataSTA_train_labels.pkl"
@@ -19,7 +19,7 @@ SAVE_MODEL = True
 OUTPUT_PREDICT = True
 
 PREFIX = "10w_"
-cmd = 1
+cmd = 4
 
 def main():
     train_data = joblib.load(TRAIN_DATA)
@@ -43,6 +43,12 @@ def main():
         model = myModels.model_origin()
         history = model.fit([train_data['vectors'], train_data['user_actions'], train_data['shop_actions']], train_labels, epochs=EPOCHS,
                             validation_data=([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']], test_labels))
+    elif cmd == 4:
+        SAVE_MODEL = False
+        SAVE_MODEL_NAME = PREFIX + "CNN5*5.h5"
+        model = myModels.model_CNN5()
+        history = model.fit(train_data['vectors'], train_labels, epochs=EPOCHS,
+                            validation_data=(test_data['vectors'], test_labels))
 
     if OUTPUT_PREDICT:
         predicts = model.predict([test_data['vectors'], test_data['user_actions'], test_data['shop_actions']])
